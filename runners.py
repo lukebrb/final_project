@@ -8,6 +8,8 @@ from classifiers import project_algorithms
 from data_ingestion import ingestion_functions
 from sklearn.model_selection import KFold, GridSearchCV
 from dataclasses import dataclass
+import joblib
+import os
 
 
 @dataclass
@@ -16,9 +18,10 @@ class Result:
     dataset_name: str
     trial_num: int
     optimal_classifier: Any
+    test_data: tuple[Any, Any]
 
 
-def run_trial(with_params):
+def run_trial(with_params) -> Result:
     """Runs a given trial using a given algorithm. Fetches data from data_fetcher.
 
     Args:
@@ -48,6 +51,7 @@ def run_trial(with_params):
         dataset_name=data_fetcher.__name__,
         trial_num=num_trial,
         optimal_classifier=opt_classifier,
+        test_data=(X_test, Y_test)
     )
 
 
@@ -61,9 +65,20 @@ def run_all_trials():
     results = process_map(run_trial, trial_combinations, max_workers=YOUR_CPU_CORES + 4)
 
     # Single-threaded for easier debugging
-    #for tc in trial_combinations:
-    #    run_trial(tc)
+    #results = [run_trial(tc) for tc in trial_combinations]
 
+    for result in tqdm(results, desc="Saving classifiers to disk..."):
+        # Save the classifier to disk for use in a Jupyter Notebook
+        folder_path = f"./classifier_cache/{result.algo_name}/{result.dataset_name}"
+        try:
+            os.makedirs(folder_path)
+        except FileExistsError:
+            pass
+
+        cls_filename = folder_path + f"/{result.trial_num}_cls.joblib.pkl"
+        test_set_filenames = folder_path + f"/{result.trial_num}_testdata.joblib.pkl"
+        _ = joblib.dump(result.optimal_classifier, cls_filename, compress=9)
+        _ = joblib.dump(result.test_data, test_set_filenames, compress=9)
 
 if __name__ == "__main__":
     run_all_trials()

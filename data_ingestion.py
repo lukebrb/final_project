@@ -4,7 +4,7 @@
 import pandas as pd
 from pandas.core.frame import DataFrame
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
 
 def electrical_grid_dataset() -> tuple[DataFrame, DataFrame, DataFrame, DataFrame]:
     path = './datasets/elec_grid_stability.csv'
@@ -42,6 +42,33 @@ def barbunya_beans():
     return train_test_split(Xsc, Y, train_size=5000)
 
 
+def stroke():
+    """Classifier for those who have had strokes.
+
+    Sourced from [Kaggle user fedesoriano](https://www.kaggle.com/fedesoriano/stroke-prediction-dataset)
+    """
+    path = './datasets/stroke.csv'
+    stroke_data = pd.read_csv(path, sep=',')
+
+    X = stroke_data.drop(['id','stroke'], axis=1)
+
+    to_one_hotify = ['gender', 'ever_married', 'work_type', 'Residence_type', 'smoking_status']
+    X = pd.get_dummies(X, prefix=to_one_hotify, columns=to_one_hotify, drop_first=True)
+
+    # bmi has some nan's, and is a [useless metric anyway](https://www.health.harvard.edu/blog/how-useful-is-the-body-mass-index-bmi-201603309339)
+    X = X.drop(['bmi'], axis=1)
 
 
-ingestion_functions = [electrical_grid_dataset, room_occupancy, barbunya_beans]
+    Xsc = StandardScaler().fit_transform(X)
+    Y = stroke_data[['stroke']].values.ravel()
+    X_train, X_test, Y_train, Y_test= train_test_split(Xsc, Y, train_size=5000)
+
+    return (X_train, X_test, Y_train, Y_test)
+
+
+
+
+
+
+
+ingestion_functions = [stroke, electrical_grid_dataset, room_occupancy, barbunya_beans]

@@ -61,4 +61,4 @@ def decision_tree():
 
 
 
-project_algorithms = [logistic_regression, SVM, perceptron, decision_tree]
+project_algorithms = [logistic_regression, perceptron, decision_tree]

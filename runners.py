@@ -1,5 +1,6 @@
-from datetime import datetime
 from multiprocessing import Pool
+import time
+from datetime import datetime
 from typing import Any
 from tqdm import tqdm
 from tqdm.contrib.concurrent import process_map
@@ -91,7 +92,7 @@ def run_all_trials():
     # Single-threaded for easier debugging
     #results = [run_trial(tc) for tc in trial_combinations]
 
-    timestamp = datetime.timestamp()
+    timestamp = int(time.time())
 
     for result in tqdm(results, desc="Saving classifiers to disk..."):
         # Save the classifier to disk for use in a Jupyter Notebook

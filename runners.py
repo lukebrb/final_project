@@ -105,5 +105,10 @@ def run_all_trials():
         _ = joblib.dump(result, result_filename, compress=9)
 
 if __name__ == "__main__":
+    def warn(*args, **kwargs):
+        pass
+    import warnings
+    warnings.warn = warn
+
     run_all_trials()
 

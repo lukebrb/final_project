@@ -6,6 +6,8 @@ from pandas.core.frame import DataFrame
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
 
+test_length = lambda num_rows: min(int(0.2 * num_rows), num_rows - 5000) 
+
 def electrical_grid_dataset() -> tuple[DataFrame, DataFrame, DataFrame, DataFrame]:
     path = './datasets/elec_grid_stability.csv'
     elec = pd.read_csv(path, sep=',')
@@ -14,9 +16,9 @@ def electrical_grid_dataset() -> tuple[DataFrame, DataFrame, DataFrame, DataFram
     Xsc = StandardScaler().fit(X).transform(X)
     Y = elec[['stabf']].values.ravel()
 
-    X_train, X_test, Y_train, Y_test = train_test_split(Xsc, Y, train_size=5000)
+    X_train, X_test, Y_train, Y_test = train_test_split(Xsc, Y, train_size=5000, test_size=test_length(len(Y)))
 
-    return(X_train, X_test, Y_train, Y_test)
+    return (X_train, X_test, Y_train, Y_test)
 
 def room_occupancy() -> tuple[DataFrame, DataFrame, DataFrame, DataFrame]:
     path = './datasets/room_occupancy.csv'
@@ -26,9 +28,9 @@ def room_occupancy() -> tuple[DataFrame, DataFrame, DataFrame, DataFrame]:
     Xsc = StandardScaler().fit(X).transform(X)
     Y = roomocc[['Occupancy']].values.ravel()
 
-    X_train, X_test, Y_train, Y_test = train_test_split(Xsc, Y, train_size=5000)
+    X_train, X_test, Y_train, Y_test = train_test_split(Xsc, Y, train_size=5000, test_size=test_length(len(Y)))
 
-    return(X_train, X_test, Y_train, Y_test)
+    return (X_train, X_test, Y_train, Y_test)
 
 def barbunya_beans():
     path = './datasets/Dry_Bean_Dataset.xlsx'
@@ -39,7 +41,7 @@ def barbunya_beans():
     beans['Class'] = (beans['Class'] == 'BARBUNYA').astype(int)
     Y = beans[['Class']].values.ravel()
 
-    return train_test_split(Xsc, Y, train_size=5000)
+    return train_test_split(Xsc, Y, train_size=5000, test_size=test_length(len(Y)))
 
 
 def stroke():
@@ -61,7 +63,7 @@ def stroke():
 
     Xsc = StandardScaler().fit_transform(X)
     Y = stroke_data[['stroke']].values.ravel()
-    X_train, X_test, Y_train, Y_test= train_test_split(Xsc, Y, train_size=5000)
+    X_train, X_test, Y_train, Y_test= train_test_split(Xsc, Y, train_size=5000, test_size=test_length(len(Y)))
 
     return (X_train, X_test, Y_train, Y_test)
 

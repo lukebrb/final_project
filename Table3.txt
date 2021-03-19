@@ -1,0 +1,9 @@
+\begin{tabular}{p{0.2\linewidth}p{0.1\linewidth}p{0.1\linewidth}p{0.1\linewidth}p{0.1\linewidth}p{0.1\linewidth}p{0.1\linewidth}p{0.1\linewidth}p{0.1\linewidth}p{0.1\linewidth}p{0.1\linewidth}p{0.1\linewidth}p{0.1\linewidth}}
+\toprule
+{} &  electrical\_grid\_dataset &    stroke &  barbunya\_beans &  room\_occupancy \\
+\midrule
+logistic\_regression &                 0.752105 &  0.358893 &        0.945253 &        0.978130 \\
+decision\_tree       &                 0.774441 &  0.336524 &        0.910394 &        0.982599 \\
+perceptron          &                 0.669086 &  0.250880 &        0.902927 &        0.930897 \\
+\bottomrule
+\end{tabular}

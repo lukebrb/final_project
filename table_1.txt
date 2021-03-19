@@ -1,0 +1,18 @@
+\begin{tabular}{lrrrrrr}
+\toprule
+{} &  average\_accuracy &  average\_f1\_score &  average\_auc &  average\_mcc &  average\_precision &  average\_recall \\
+\midrule
+logistic\_regression \textbackslash  electrical\_grid\_dataset &           0.81792 &          0.733636 &     0.889641 &     0.598594 &           0.778588 &        0.694252 \\
+logistic\_regression \textbackslash  stroke                  &           0.95132 &          0.012739 &     0.840074 &     0.042711 &           0.300000 &        0.006515 \\
+logistic\_regression \textbackslash  barbunya\_beans          &           0.98540 &          0.924099 &     0.995514 &     0.916557 &           0.947689 &        0.902256 \\
+logistic\_regression \textbackslash  room\_occupancy          &           0.98828 &          0.973018 &     0.994275 &     0.966009 &           0.951520 &        0.995680 \\
+decision\_tree \textbackslash  electrical\_grid\_dataset       &           0.83964 &          0.776566 &     0.824610 &     0.651929 &           0.783863 &        0.770038 \\
+decision\_tree \textbackslash  stroke                        &           0.91204 &          0.148837 &     0.554949 &     0.103274 &           0.140979 &        0.159068 \\
+decision\_tree \textbackslash  barbunya\_beans                &           0.97816 &          0.889134 &     0.938466 &     0.877332 &           0.890228 &        0.889044 \\
+decision\_tree \textbackslash  room\_occupancy                &           0.99160 &          0.980436 &     0.987419 &     0.975140 &           0.980915 &        0.980084 \\
+perceptron \textbackslash  electrical\_grid\_dataset          &           0.74700 &          0.659715 &     0.816872 &     0.463111 &           0.648357 &        0.679461 \\
+perceptron \textbackslash  stroke                           &           0.94160 &          0.016507 &     0.469433 &     0.012208 &           0.045055 &        0.020476 \\
+perceptron \textbackslash  barbunya\_beans                   &           0.97292 &          0.858543 &     0.991812 &     0.851306 &           0.875838 &        0.867142 \\
+perceptron \textbackslash  room\_occupancy                   &           0.96516 &          0.901138 &     0.993391 &     0.891248 &           0.948760 &        0.885684 \\
+\bottomrule
+\end{tabular}

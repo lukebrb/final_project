@@ -10,16 +10,16 @@ def logistic_regression():
     {
         'C': C_list,
         'penalty': ['l2'],
+        'solver': ['liblinear', "newton-cg", "lbfgs"],
         'max_iter': [3000]
     }, 
     {
         'penalty': ['none'],
-        'max_iter': [3000]
     },
     {
         'C': C_list,
         'penalty': ['l1'],
-        'solver': ['liblinear'],
+        'solver': ['liblinear', "newton-cg", "lbfgs"],
         'max_iter': [3000]
     }
     ]
@@ -47,7 +47,8 @@ def SVM():
 
 def perceptron():
     gridsearch_params = [{
-        'alpha': np.logspace(-14, 0, 5, base=2.0)
+        'alpha': np.logspace(-14, 0, 5, base=2.0),
+
     }]
 
     return (Perceptron(), gridsearch_params)

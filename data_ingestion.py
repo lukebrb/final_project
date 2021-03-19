@@ -5,6 +5,7 @@ import pandas as pd
 from pandas.core.frame import DataFrame
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
+import numpy as np
 
 test_length = lambda num_rows: min(int(0.2 * num_rows), num_rows - 5000) 
 
@@ -14,7 +15,7 @@ def electrical_grid_dataset() -> tuple[DataFrame, DataFrame, DataFrame, DataFram
 
     X = elec.drop(['stab', 'stabf'], axis=1)
     Xsc = StandardScaler().fit(X).transform(X)
-    Y = elec[['stabf']].values.ravel()
+    Y = np.where(elec['stabf'] == 'stable', 1 ,0)
 
     X_train, X_test, Y_train, Y_test = train_test_split(Xsc, Y, train_size=5000, test_size=test_length(len(Y)))
 
@@ -51,9 +52,7 @@ def stroke():
     """
     path = './datasets/stroke.csv'
     stroke_data = pd.read_csv(path, sep=',')
-
     X = stroke_data.drop(['id','stroke'], axis=1)
-
     to_one_hotify = ['gender', 'ever_married', 'work_type', 'Residence_type', 'smoking_status']
     X = pd.get_dummies(X, prefix=to_one_hotify, columns=to_one_hotify, drop_first=True)
 
@@ -61,9 +60,8 @@ def stroke():
     X = X.drop(['bmi'], axis=1)
 
 
-    Xsc = StandardScaler().fit_transform(X)
     Y = stroke_data[['stroke']].values.ravel()
-    X_train, X_test, Y_train, Y_test= train_test_split(Xsc, Y, train_size=5000, test_size=test_length(len(Y)))
+    X_train, X_test, Y_train, Y_test= train_test_split(X, Y, train_size=5000, test_size=test_length(len(Y)))
 
     return (X_train, X_test, Y_train, Y_test)
 

@@ -30,6 +30,8 @@ class Result:
     runtime: float
     """A pandas DataFrame that can be imported 
     """
+    best_index_: int
+    best_params: Any
     cv_results_: Any
 
 
@@ -52,7 +54,15 @@ def run_trial(with_params) -> Result:
     X_train, X_test, Y_train, Y_test = data_fetcher()
 
     # GridSearchCV automatically does 5 kfold splits.
-    search_results = GridSearchCV(algo, params)
+    search_results = GridSearchCV(algo, params, scoring={
+        'AUC': 'roc_auc',
+        'Accuracy': metrics.make_scorer(metrics.accuracy_score),
+        'F1': 'f1',
+        'Precision': 'precision',
+        'Recall': 'recall',
+        'MCC': metrics.make_scorer(metrics.matthews_corrcoef)
+    }, refit='Accuracy')
+
     search_results.fit(X_train, Y_train)
 
     opt_classifier = search_results.best_estimator_
@@ -75,7 +85,9 @@ def run_trial(with_params) -> Result:
         X_test=X_test,
         Y_test = Y_test,
         Y_test_pred = Y_test_pred,
-        runtime=runtime ,
+        runtime=runtime,
+        best_index_=search_results.best_index_,
+        best_params=search_results.best_params_,
         cv_results_ = search_results.cv_results_
     )
 
@@ -89,8 +101,8 @@ def run_all_trials():
     YOUR_CPU_CORES = 8
     results = process_map(run_trial, trial_combinations, max_workers=YOUR_CPU_CORES + 4)
 
-    # Single-threaded for easier debugging
-    #results = [run_trial(tc) for tc in trial_combinations]
+    #Single-threaded for easier debugging
+    # results = [run_trial(tc) for tc in trial_combinations]
 
     timestamp = int(time.time())
 
@@ -106,10 +118,9 @@ def run_all_trials():
         _ = joblib.dump(result, result_filename, compress=9)
 
 if __name__ == "__main__":
-    def warn(*args, **kwargs):
-        pass
     import warnings
-    warnings.warn = warn
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
 
     run_all_trials()
 
